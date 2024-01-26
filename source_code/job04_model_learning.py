@@ -5,14 +5,14 @@ import os
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 
-file = "../learning_data/comment_data_max_199_wordsize_14851.npy"
+file = "../learning_data/comment_data_max_199_wordsize_30131.npy"
 
-max = int(os.path.splitext(file)[0].split("/")[-1].split("_")[3])
-wordsize = int(os.path.splitext(file)[0].split("/")[-1].split("_")[5])
+max = int(os.path.splitext(file)[0].split("/")[-1].split("_")[3])  # 파일명에서 문장의 최대 거리를 가져옴
+wordsize = int(os.path.splitext(file)[0].split("/")[-1].split("_")[5])  # 파일명을 이용하여 단어의 개수를 가져옴
 
 print(max, wordsize)
 
-X_train, X_test, Y_train, Y_test = np.load(file, allow_pickle=True)
+X_train, X_test, Y_train, Y_test = np.load(file, allow_pickle=True)  # 데이터를 불러옴
 
 print(X_train.shape, Y_train.shape)
 print(X_test.shape, Y_test.shape)
@@ -23,6 +23,8 @@ model = Sequential(
         Conv1D(40, kernel_size=5, padding="same", activation="relu"),
         MaxPooling1D(pool_size=1),
         LSTM(wordsize // 1200, activation="tanh", return_sequences=True),
+        Dropout(0.3),
+        LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
         Dropout(0.3),
         LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
         Dropout(0.3),
