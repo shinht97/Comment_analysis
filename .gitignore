@@ -172,3 +172,4 @@ pyrightconfig.json
 
 # raw data folder
 raw_data/
+datasets/
