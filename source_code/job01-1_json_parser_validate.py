@@ -6,7 +6,9 @@ import os
 
 file_path = glob.glob("../raw_data/*/*")  # 특정 폴더 하위에 있는 모든 파일을 찾음
 
-for k in range(0, len(file_path), 5):  # 각 파일 경로 당 작업 수행
+whole_df = pd.DataFrame()
+
+for k in range(0, len(file_path), 40):  # 각 파일 경로 당 작업 수행
 
     if k % 100 == 0:
         print(f"\r파일 읽어 오는 중 : {k / len(file_path) * 100:.2f}%", end="")
@@ -38,5 +40,7 @@ for k in range(0, len(file_path), 5):  # 각 파일 경로 당 작업 수행
     df["RawText"] = RawText
     df["Polarity"] = Polarity
 
-    df.to_csv(f"../datasets/{file_name}.csv", index=False)
+    whole_df = pd.concat([whole_df, df], axis="rows", ignore_index=True)
+
+whole_df.to_csv(f"../validate_data/validate_data.csv", index=False)
 

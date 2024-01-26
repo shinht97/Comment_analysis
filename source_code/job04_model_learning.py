@@ -40,7 +40,7 @@ model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accur
 
 fit_hist = model.fit(X_train, Y_train, batch_size=128, epochs=10, validation_data=(X_test, Y_test))
 
-model.save("../models/comment_category_classification_model_{}.h5".format(fit_hist.history["val_accuracy"][-1]))
+model.save("../models/comment_category_classification_model_{}_{}_{}.h5".format(max, wordsize, fit_hist.history["val_accuracy"][-1]))
 
 plt.plot(fit_hist.history["val_accuracy"], label="validation accuracy")
 plt.plot(fit_hist.history["accuracy"], label="accuracy")

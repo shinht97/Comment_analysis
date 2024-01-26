@@ -34,15 +34,16 @@ okt = Okt()
 
 for i in range(len(X)):
     if i % 100 == 0:
-        print(f"\r형태소 분리 working on {i}/{len(X)}, {i/len(X) * 100:.2f}%", end="")  # 진행 상황 표시
+        print(f"\r형태소 분리 중 : {i/len(X) * 100:.2f}%, {i}/{len(X)}", end="")  # 진행 상황 표시
     X[i] = okt.morphs(X[i], stem=True)
     
-print()
+print(f"\r형태소 분리 중 : 100.00%")
+
 stopwords = pd.read_csv("../stopwords.csv", index_col=0)
 
 for i in range(len(X)):
     if i % 100 == 0:
-        print(f"\r문자열 필터링 working on {i}/{len(X)}, {i/len(X) * 100:.2f}%", end="")
+        print(f"\r문자열 필터링 중 : {i/len(X) * 100:.2f}%, {i}/{len(X)}", end="")
     words = []
     for j in range(len(X[i])):
         if len(X[i][j]) > 1:
@@ -50,6 +51,8 @@ for i in range(len(X)):
                 words.append(X[i][j])
 
     X[i] = " ".join(words)
+
+print(f"\r문자열 필터링 중 : 100.00%")
 
 token = Tokenizer()
 token.fit_on_texts(X)
@@ -67,9 +70,11 @@ max = 0
 
 for i in range(len(tokened_x)):
     if i % 100 == 0:
-        print(f"\r최대 길이 구하기 working on {i}/{len(tokened_x)}, {i/len(tokened_x) * 100:.2f}%", end="")
+        print(f"\r최대 길이 구하는 중 : {i/len(tokened_x) * 100:.2f}%, {i}/{len(tokened_x)}", end="")
     if max < len(tokened_x[i]):
         max = len(tokened_x[i])
+
+print(f"\r최대 길이 구하는 중 : 100.00%")
 
 print(f"가장 긴 문장의 길이 : {max}")
 
