@@ -12,6 +12,7 @@ for k in range(0, len(file_path)):  # 각 파일 경로 당 작업 수행
 
     RawText = []
     Polarity = []  # 빈 리스트 생성
+    ReviewScore = []
 
     with open(file_path[k], "r", encoding="utf-8") as file:  # 파일을 염
         json_data = json.load(file)  # json 형태의 파일을 읽어서
@@ -24,18 +25,24 @@ for k in range(0, len(file_path)):  # 각 파일 경로 당 작업 수행
             for j in range(len(json_data[i]["Aspects"])):
                 polarity += int(json_data[i]["Aspects"][j]["SentimentPolarity"])  # 긍정 부정 반응을 요소를 계산
 
-            if polarity >= len(json_data[i]["Aspects"]) * 0.7:  # 전체 반응 개수 중에 70%로 긍정이면
+            if polarity >= len(json_data[i]["Aspects"]) * 0.5:  # 전체 반응 개수 중에 70%로 긍정이면
                 Polarity.append("긍정")  # 긍정
-            elif (polarity < len(json_data[i]["Aspects"]) * 0.7) and (polarity >= 0):  # 그 이하면 무반은
+            elif (polarity < len(json_data[i]["Aspects"]) * 0.5) and (polarity >= -1):  # 그 이하면 무반은
                 Polarity.append("무반응")  # soso
-            elif polarity < 0:  # 음수면 부정
+            elif polarity < -1:  # 음수면 부정
                 Polarity.append("부정")  # 부정
+
+            if int(json_data[i]["ReviewScore"]) < 10:
+                ReviewScore.append(str(int(json_data[i]["ReviewScore"]) * 20))
+            else:
+                ReviewScore.append(json_data[i]["ReviewScore"])
 
     file_name = os.path.splitext(file_path[k])[0].split("\\")[-1]  # 파일 경로에서 파일 명을 분리
 
     df = pd.DataFrame()
     df["RawText"] = RawText
     df["Polarity"] = Polarity
+    df["ReviewScore"] = ReviewScore
 
     df.to_csv(f"../datasets/{file_name}.csv", index=False)  # dataframe 저장
 

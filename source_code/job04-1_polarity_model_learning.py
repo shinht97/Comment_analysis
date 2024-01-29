@@ -49,3 +49,4 @@ plt.plot(fit_hist.history["accuracy"], label="accuracy")
 
 plt.legend()
 plt.show()
+# plt.savefig("../image/polarity_accuracy.png")

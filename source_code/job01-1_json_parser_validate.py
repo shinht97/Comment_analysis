@@ -15,6 +15,7 @@ for k in range(0, len(file_path), 40):  # 각 파일 경로 당 작업 수행
 
     RawText = []
     Polarity = []  # 빈 리스트 생성
+    ReviewScore = []
 
     with open(file_path[k], "r", encoding="utf-8") as file:  # 파일을 염
         json_data = json.load(file)  # json 형태의 파일을 읽어서
@@ -29,16 +30,17 @@ for k in range(0, len(file_path), 40):  # 각 파일 경로 당 작업 수행
 
             if polarity >= len(json_data[i]["Aspects"]) * 0.5:
                 Polarity.append("긍정")  # 긍정
-            elif (polarity < len(json_data[i]["Aspects"]) * 0.5) and (polarity >= 0):
+            elif (polarity < len(json_data[i]["Aspects"]) * 0.5) and (polarity >= -1):
                 Polarity.append("무반응")  # soso
-            elif polarity < 0:
+            elif polarity < -1:
                 Polarity.append("부정")  # 부정
 
-    file_name = os.path.splitext(file_path[k])[0].split("\\")[-1]  # 경로에서 파일 명을 분리
+            ReviewScore.append(json_data[i]["ReviewScore"])
 
     df = pd.DataFrame()
     df["RawText"] = RawText
     df["Polarity"] = Polarity
+    df["ReviewScore"] = ReviewScore
 
     whole_df = pd.concat([whole_df, df], axis="rows", ignore_index=True)
 

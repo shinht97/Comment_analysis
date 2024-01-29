@@ -15,8 +15,8 @@ import pickle
 
 df = pd.read_csv("../learning_data/concated_file.csv")  # 파일을 읽어와 dataframe으로 만듦
 
-X = df["RawText"]  # 학습 데이터 : 댓글 
-Y = df["Polarity"]  # 결과 : 반은
+X = df["RawText"].copy()  # 학습 데이터 : 댓글
+Y = df["Polarity"]  # 결과 : 반응
 
 # Y 전처리
 label_encoder = LabelEncoder()
