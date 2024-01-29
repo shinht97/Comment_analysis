@@ -15,14 +15,20 @@ from tensorflow.keras.models import load_model
 import os
 
 
-model_file = "../models/comment_category_classification_model_199_30131_0.8227196931838989.h5"
+polarity_model_file = "../models/comment_category_classification_model_199_30131_0.8285316824913025.h5"
 
-model = load_model(model_file)
+polarity_model = load_model(polarity_model_file)
+
+score_model_file = "../models/score_category_classification_model_199_26740_0.7304589152336121.h5"
+
+score_model = load_model(score_model_file)
 
 stopwords = pd.read_csv("../stopwords.csv")
 
-max = int(os.path.splitext(model_file)[0].split("/")[-1].split("_")[4])
-wordsize = int(os.path.splitext(model_file)[0].split("/")[-1].split("_")[5])
+max = int(os.path.splitext(polarity_model_file)[0].split("/")[-1].split("_")[4])
+wordsize = int(os.path.splitext(polarity_model_file)[0].split("/")[-1].split("_")[5])
+
+score_wordsize = int(os.path.splitext(score_model_file)[0].split("/")[-1].split("_")[5])
 
 with open("../models/label_encoder.pickle", "rb") as file:
     label_encoder = pickle.load(file)
@@ -30,6 +36,11 @@ with open("../models/label_encoder.pickle", "rb") as file:
 label = label_encoder.classes_
 
 print(label)
+
+with open("../models/score_label_encoder.pickle", "rb") as file:
+    score_encoder = pickle.load(file)
+
+scores = score_encoder.classes_
 
 okt = Okt()
 
@@ -49,16 +60,31 @@ with open("../models/word_token.pickle", "rb") as file:
 
 tokened_x = token.texts_to_sequences([X])
 
-# print(tokened_x)
-# exit()
+print(tokened_x)
 
 if len(tokened_x[0]) > max:
     tokened_x = tokened_x[:max]
 
 x_pad = pad_sequences(tokened_x, max)
 
-preds = model.predict(x_pad)
+preds = polarity_model.predict(x_pad)
 
 print(preds)
 
 print(label[np.argmax(preds)])
+
+with open("../models/score_word_token.pickle", "rb") as file:
+    score_token = pickle.load(file)
+
+score_tokened_x = score_token.texts_to_sequences([X])
+
+if len(score_tokened_x[0]) > max:
+    score_tokened_x = score_tokened_x[:max]
+
+score_x_pad = pad_sequences(score_tokened_x, max)
+
+score_preds = score_model.predict(score_x_pad)
+
+print(score_preds)
+
+print(scores[np.argmax(score_preds)])
