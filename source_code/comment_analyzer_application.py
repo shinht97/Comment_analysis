@@ -25,7 +25,7 @@ class Main(QWidget, form_window):
         self.setupUi(self)
 
         # 미리 학습된 모델의 파일 경로
-        self.polarity_path = "../models/comment_category_classification_model_199_27766_0.7989.h5"
+        self.polarity_path = "../models/comment_category_classification_model_199_27766_0.8081.h5"
         self.score_path = "../models/score_category_classification_model_199_14075_0.6085.h5"
         self.stopwords = pd.read_csv("../stopwords.csv")
 

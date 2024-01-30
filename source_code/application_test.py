@@ -15,7 +15,7 @@ from tensorflow.keras.models import load_model
 import os
 
 
-polarity_model_file = "../models/comment_category_classification_model_199_27766_0.7989.h5"
+polarity_model_file = "../models/comment_category_classification_model_199_27766_0.8081.h5"
 
 polarity_model = load_model(polarity_model_file)
 

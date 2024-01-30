@@ -12,7 +12,7 @@ from tensorflow.keras.models import load_model
 import os
 
 
-comment_model_file = "../models/comment_category_classification_model_199_27766_0.7989.h5"  # 저장된 모델의 경로 지정
+comment_model_file = "../models/comment_category_classification_model_199_27766_0.8081.h5"  # 저장된 모델의 경로 지정
 score_model_file = "../models/score_category_classification_model_199_14075_0.6085.h5"
 
 comment_model = load_model(comment_model_file)

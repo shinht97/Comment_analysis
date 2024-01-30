@@ -26,12 +26,14 @@ model = Sequential(
         Dropout(0.3),
         LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
         Dropout(0.3),
-        LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
-        Dropout(0.3),
+        # LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
+        # Dropout(0.3),
         LSTM(wordsize // 2400, activation="tanh"),
         Dropout(0.3),
         Flatten(),
         Dense(wordsize // 1200, activation="relu"),
+        Dropout(0.3),
+        Dense(wordsize // 600, activation="relu"),
         Dense(3, activation="softmax")
     ]
 )
