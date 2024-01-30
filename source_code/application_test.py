@@ -15,20 +15,17 @@ from tensorflow.keras.models import load_model
 import os
 
 
-polarity_model_file = "../models/comment_category_classification_model_199_30131_0.8285316824913025.h5"
+polarity_model_file = "../models/comment_category_classification_model_199_27766_0.7989.h5"
 
 polarity_model = load_model(polarity_model_file)
 
-score_model_file = "../models/score_category_classification_model_199_26740_0.7304589152336121.h5"
+score_model_file = "../models/score_category_classification_model_199_14075_0.6085.h5"
 
 score_model = load_model(score_model_file)
 
 stopwords = pd.read_csv("../stopwords.csv")
 
 max = int(os.path.splitext(polarity_model_file)[0].split("/")[-1].split("_")[4])
-wordsize = int(os.path.splitext(polarity_model_file)[0].split("/")[-1].split("_")[5])
-
-score_wordsize = int(os.path.splitext(score_model_file)[0].split("/")[-1].split("_")[5])
 
 with open("../models/label_encoder.pickle", "rb") as file:
     label_encoder = pickle.load(file)
@@ -41,6 +38,8 @@ with open("../models/score_label_encoder.pickle", "rb") as file:
     score_encoder = pickle.load(file)
 
 scores = score_encoder.classes_
+
+print(scores)
 
 okt = Okt()
 

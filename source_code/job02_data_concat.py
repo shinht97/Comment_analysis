@@ -15,6 +15,9 @@ for i, file in enumerate(file_path):  # 리스트에 있는 모든 파일에 대
 
 print(f"\rworking 100.00%")
 
+# df.sort_values(["Polarity", "ReviewScore"], ascending=True, inplace=True)
+# df.reset_index(drop=True, inplace=True)
+
 print(df.head())
 
 df.to_csv("../learning_data/concated_file.csv", index=False)  # 합친 dataframe을 저장

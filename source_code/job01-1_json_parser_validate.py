@@ -4,11 +4,11 @@ import pandas as pd
 import numpy as np
 import os
 
-file_path = glob.glob("../raw_data/*/*")  # 특정 폴더 하위에 있는 모든 파일을 찾음
+file_path = glob.glob("../raw_data/validate/*/*")  # 특정 폴더 하위에 있는 모든 파일을 찾음
 
 whole_df = pd.DataFrame()
 
-for k in range(0, len(file_path), 40):  # 각 파일 경로 당 작업 수행
+for k in range(0, len(file_path), 20):  # 각 파일 경로 당 작업 수행
 
     if k % 100 == 0:
         print(f"\r파일 읽어 오는 중 : {k / len(file_path) * 100:.2f}%", end="")

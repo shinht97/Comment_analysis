@@ -25,11 +25,11 @@ for k in range(0, len(file_path)):  # 각 파일 경로 당 작업 수행
             for j in range(len(json_data[i]["Aspects"])):
                 polarity += int(json_data[i]["Aspects"][j]["SentimentPolarity"])  # 긍정 부정 반응을 요소를 계산
 
-            if polarity >= len(json_data[i]["Aspects"]) * 0.5:  # 전체 반응 개수 중에 70%로 긍정이면
+            if polarity >= len(json_data[i]["Aspects"]) * 0.7:  # 전체 반응 개수 중에 50%로 긍정이면
                 Polarity.append("긍정")  # 긍정
-            elif (polarity < len(json_data[i]["Aspects"]) * 0.5) and (polarity >= -1):  # 그 이하면 무반은
+            elif (polarity < len(json_data[i]["Aspects"]) * 0.7) and (polarity >= 0):  # 그 이하면 무반은
                 Polarity.append("무반응")  # soso
-            elif polarity < -1:  # 음수면 부정
+            elif polarity < 0:  # 음수면 부정
                 Polarity.append("부정")  # 부정
 
             if int(json_data[i]["ReviewScore"]) < 10:

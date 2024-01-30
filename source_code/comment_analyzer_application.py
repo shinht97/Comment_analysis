@@ -15,7 +15,8 @@ from tensorflow.keras.models import load_model
 
 import os
 
-form_window = uic.loadUiType("../ui/comment_analysis.ui")[0] # 디자인 파일 경로 입력
+
+form_window = uic.loadUiType("../ui/comment_analysis.ui")[0]  # 디자인 파일 경로 입력
 
 
 class Main(QWidget, form_window):
@@ -23,19 +24,21 @@ class Main(QWidget, form_window):
         super().__init__()
         self.setupUi(self)
 
-        self.polarity_path = "../models/comment_category_classification_model_199_30131_0.8285316824913025.h5"
-        self.score_path = "../models/score_category_classification_model_199_24734_0.8139715194702148.h5"
+        # 미리 학습된 모델의 파일 경로
+        self.polarity_path = "../models/comment_category_classification_model_199_27766_0.7989.h5"
+        self.score_path = "../models/score_category_classification_model_199_14075_0.6085.h5"
         self.stopwords = pd.read_csv("../stopwords.csv")
 
+        # 모델을 불러옴
         self.polarity_model = load_model(self.polarity_path)
         self.score_model = load_model(self.score_path)
 
+        # 파일 명을 이용 하여 필요한 정보를 처리
         self.max = int(os.path.splitext(self.polarity_path)[0].split("/")[-1].split("_")[4])
-        self.wordsize = int(os.path.splitext(self.polarity_path)[0].split("/")[-1].split("_")[5])
-        self.score_wordsize = int(os.path.splitext(self.score_path)[0].split("/")[-1].split("_")[5])
 
         self.okt = Okt()
 
+        # 미리 저장해 놓은 encoder와 tokenizer를 불러드림
         with open("../models/label_encoder.pickle", "rb") as file:
             self.label_encoder = pickle.load(file)
 
@@ -56,15 +59,15 @@ class Main(QWidget, form_window):
         with open("../models/score_word_token.pickle", "rb") as file:
             self.score_token = pickle.load(file)
 
+        # 버튼을 눌렀을 때 작동할 기능 연결
         self.btn_go.clicked.connect(self.comment_analysis_clicked_slot)
         self.btn_clear.clicked.connect(self.clear_clicked_slot)
 
     def comment_analysis_clicked_slot(self):
-        print("Debug1")
-        X = self.tb_comment.toPlainText()
+        X = self.tb_comment.toPlainText()  # text 박스에 있는 글을 읽어 옴
 
         print(X)
-        if X != "":
+        if X != "":  # 공란이 아닌 경우에 분석 진행 
             X = self.okt.morphs(X, stem=True)
 
             words = []
@@ -93,8 +96,9 @@ class Main(QWidget, form_window):
 
             self.tb_polarity.setText(str(self.label[np.argmax(preds)]))
             self.tb_score.setText(str(self.scores[np.argmax(score_preds)]))
-        else:
-            self.tb_comment.setPlainText("분석할 리뷰를 입력하세요.")
+
+        else:  # 공란인 경우에 정보 표시
+            self.tb_comment.setPlainText("분석할 리뷰를 입력 하세요.")
 
     def clear_clicked_slot(self):
         self.tb_comment.setPlainText("")

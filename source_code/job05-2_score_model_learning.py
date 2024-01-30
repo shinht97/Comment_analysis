@@ -5,10 +5,10 @@ import os
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 
-file = "../learning_data/comment_data_max_199_wordsize_30131.npy"
+file = "../learning_data/score_data_max_199_wordsize_14075.npy"
 
-max = int(os.path.splitext(file)[0].split("/")[-1].split("_")[3])  # 파일명에서 문장의 최대 거리를 가져옴
-wordsize = int(os.path.splitext(file)[0].split("/")[-1].split("_")[5])  # 파일명을 이용하여 단어의 개수를 가져옴
+max = int(os.path.splitext(file)[0].split("/")[-1].split("_")[3])  # 파일 명에서 문장의 최대 거리를 가져옴
+wordsize = int(os.path.splitext(file)[0].split("/")[-1].split("_")[5])  # 파일 명을 이용 하여 단어의 개수를 가져옴
 
 print(max, wordsize)
 
@@ -24,15 +24,13 @@ model = Sequential(
         MaxPooling1D(pool_size=1),
         LSTM(wordsize // 1200, activation="tanh", return_sequences=True),
         Dropout(0.3),
-        LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
-        Dropout(0.3),
-        LSTM(wordsize // 2400, activation="tanh", return_sequences=True),
-        Dropout(0.3),
         LSTM(wordsize // 2400, activation="tanh"),
         Dropout(0.3),
         Flatten(),
         Dense(wordsize // 1200, activation="relu"),
-        Dense(3, activation="softmax")
+        Dropout(0.3),
+        Dense(wordsize // 600, activation="relu"),
+        Dense(11, activation="softmax")
     ]
 )
 
@@ -40,13 +38,14 @@ model.summary()
 
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-fit_hist = model.fit(X_train, Y_train, batch_size=128, epochs=10, validation_data=(X_test, Y_test))
+fit_hist = model.fit(X_train, Y_train, batch_size=64, epochs=5, validation_data=(X_test, Y_test))
 
-model.save("../models/comment_category_classification_model_{}_{}_{}.h5".format(max, wordsize, fit_hist.history["val_accuracy"][-1]))
+model.save("../models/score_category_classification_model_{}_{}_{:.4f}.h5".format(max, wordsize, fit_hist.history["val_accuracy"][-1]))
 
 plt.plot(fit_hist.history["val_accuracy"], label="validation accuracy")
 plt.plot(fit_hist.history["accuracy"], label="accuracy")
 
 plt.legend()
+plt.savefig("../image/score_accuracy.png", format="png")  # 점수 예측 정확도 그래프 저장
+
 plt.show()
-# plt.savefig("../image/polarity_accuracy.png")
