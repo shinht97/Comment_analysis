@@ -7,9 +7,11 @@
 
 ### UI를 이용한 어플리케이션
 
-<무반응 댓글 분석>
-![image](https://github.com/shinht97/Comment_analysis/assets/71716980/b68a05dc-6226-4088-9f97-b4876a350e32)
 
+![image](https://github.com/shinht97/Comment_analysis/assets/71716980/b68a05dc-6226-4088-9f97-b4876a350e32)  
+<무반응 댓글 분석>
+
+
+![image](https://github.com/shinht97/Comment_analysis/assets/71716980/d61e23d4-fabf-435c-9066-d07f63a1f660)  
 <긍정 댓글 분석>
-![image](https://github.com/shinht97/Comment_analysis/assets/71716980/d61e23d4-fabf-435c-9066-d07f63a1f660)
 
